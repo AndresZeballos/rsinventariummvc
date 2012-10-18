@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^inventario/$', 'inventario.views.consultar'),
-    #url(r'^inventario/filtrar/$', 'inventario.views.filtrar'),
+    url(r'^inventario/filtrar/$', 'inventario.views.consultar'),
     url(r'^inventario/(?P<art_id>\d+)/$', 'inventario.views.detalle'),
     
     url(r'^stock/$', 'inventario.views.stock'),
