@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+<head>
+<title>Consultas</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
+
+<script type="text/javascript">window.__admin_media_prefix__ = "/static/admin/";</script>
+
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+<!-- <link href="{{ STATIC_URL }}/static/reset.css" type="text/css" rel="stylesheet" /> -->
+
+<body class="dashboard">
+<!-- Container -->
+	<div id="container">
+	    <!-- Header -->
+	    <div id="header">
+	        <div id="branding">
+				<h1 id="site-name">Pagina de consultas </h1>
+	        </div>
+	    </div>
+	    	    
+	    <!-- END Header -->
+	    
+	    <div style = "float: right; width: 200px;">
+			<a style="float: right; width: 200px;" href="/">Volver a la pagina principal</a>
+			<a style="float: right; width: 200px;" href="/admin/">Administracion</a>
+			<a style="float: right; width: 200px;" href="/stock/">Gestion de stock</a>
+		</div>
+	    <!-- Content -->
+    	<div id="content" class="colM">
+    		<h1>Filtros disponibles</h1>
+	    	<div id="content-main">
+				<form enctype="multipart/form-data" action="/inventario/filtrar/" method="post" id="articulo_form"><div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='fa5a02f1b29ab1afec7d8f1d2f87e3ed' /></div>
+					<div>
+						<fieldset class="module aligned ">
+							
+					{% for n, dic in dicc.items %}
+						{% for combo, lista in dic.0.items %}
+							<div class="form-row {{ combo|lower }}">
+				                <div>
+			                        <label for="id_{{ combo|lower }}" class="required">{{ combo }}:</label>
+			                        <SELECT id="id_{{ combo|lower }}" name="{{ combo|lower }}"> 
+										<OPTION value="0"></OPTION>
+										{% for elemento in lista %}
+											{% ifequal dic.1|add:0 elemento.id %}
+												<OPTION selected value="{{ elemento.id }}">{{ elemento }}</OPTION>
+											{% else %}
+												<OPTION value="{{ elemento.id }}">{{ elemento }}</OPTION>
+											{% endifequal %}
+										{% endfor %}
+									</SELECT>
+					            </div>
+						    </div>
+						{% endfor %}
+					{% endfor %}
+							
+					    </fieldset>
+						<div class="submit-row" >
+							<input type="submit" value="Filtrar" class="default" name="Filtrar" />
+						</div>
+
+						<script type="text/javascript">document.getElementById("id_codigo").focus();</script>
+						<script type="text/javascript">
+						(function($) {
+						    var field = null;
+						})(django.jQuery);
+						</script>
+					</div>
+				</form>
+			</div>
+			
+			<br class="clear" />
+	    </div>
+	    <!-- END Content -->
+	    
+	</div>
+	
+	
+	<br />
+	<div id="container">	
+		<div id="header">
+			<div id="branding">
+				<h1>Resultados </h1>
+			</div>
+		</div>
+		<div id="content" class="colMS">
+		{% if articulos %}
+			<div style = "float: left; display: table; margin-left: auto; margin-right: auto; 
+						  width: 2000px;">
+					<div style = "height: 25px; width: 1000px;">
+					<div style="float: left; height: 25px; width: 150px;"><b>Codigo</b></div>
+					<div style="float: left; height: 25px; width: 80px;"><b>Talle</b></div>
+					<div style="float: left; height: 25px; width: 150px;"><b>Local</b></div>
+					<div style="float: left; height: 25px; width: 100px;"><b>Color</b></div>
+					<div style="float: left; height: 25px; width: 100px;"><b>Stock</b></div>
+					</div>
+				{% for art in articulos %}
+					<div style = "height: 25px; width: 1000px;">
+						<div style="float: left; height: 25px; width: 150px;"><a href="/inventario/{{ art.id }}/">{{ art.producto }}</a></div>
+						<div style="float: left; height: 25px; width: 80px;">{{ art.talle }}</div>
+						<div style="float: left; height: 25px; width: 150px;">{{ art.local }}</div>
+						<div style="float: left; height: 25px; width: 100px;">{{ art.color }}</div>
+						<div style="float: left; height: 25px; width: 100px;">{{ art.stock }}</div>
+					</div>
+				{% endfor %}
+			</div>
+			<br class="clear" />
+	    {% else %}
+	    	<div>No existen resutados con estos datos.</div>
+	    {% endif %}
+	    </div>
+	</div>
+	
+	
+	<!-- END Container -->
+</body>
+</html>
